@@ -43,15 +43,7 @@ export async function getProductAction(
     // const seed = parseInt(barcode.slice(-4)) || 50;
     // const simulatedPrice = (seed % 146) + 5;
 
-    const responseProduct: IProduct = {
-      id: data.code,
-      name: data.product.product_name,
-      brand: data.product.brands,
-      image: data.product.image_front_small_url,
-      category: data.product.categories_tags?.[0].replace("en:", ""),
-    };
-
-    return { success: true, data: mappedResponseProductsData(responseProduct) };
+    return { success: true, data: mappedResponseProductsData(data) };
   } catch (e) {
     return {
       success: false,

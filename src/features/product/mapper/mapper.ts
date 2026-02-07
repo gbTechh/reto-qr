@@ -1,22 +1,16 @@
-import { IProduct } from "../types";
+import { IOpenFoodFactsResponse, IProduct } from "../types";
 
-export interface ProductResponse {
-  id: string;
-  name: string;
-  brand: string;
-  image: string;
-  price: number;
-  category: string;
-}
-
-export const mappedResponseProductsData = (data: IProduct): ProductResponse => {
+export const mappedResponseProductsData = (
+  data: IOpenFoodFactsResponse,
+): IProduct => {
   return {
-    id: data.id,
-    name: data.name || "Producto sin nombre",
-    brand: data.brand || "Marca genérica",
-    image: data.image || "/placeholder-product.png",
-    price: generateMockPrice(data.id),
-    category: data.category || "General",
+    id: data.code,
+    name: data.product?.product_name || "Producto sin nombre",
+    brand: data.product?.brands || "Marca genérica",
+    image: data.product?.image_front_small_url || "/placeholder-product.png",
+    price: generateMockPrice(data.code),
+    category:
+      data.product?.categories_tags?.[0].replace("en:", "") || "General",
   };
 };
 
