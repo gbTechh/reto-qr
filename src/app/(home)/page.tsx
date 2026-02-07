@@ -1,5 +1,6 @@
 import { ButtonHistorial } from "@/components/atoms/ButtonHistorial";
 import { Text } from "@/components/atoms/Text";
+import { FlowField } from "@/components/molecules/FlowField";
 import { ManualSearch } from "@/components/organism/ManualSearch";
 import { QrCode } from "lucide-react";
 
@@ -7,12 +8,14 @@ import { QrCode } from "lucide-react";
 export default async function HomePage() {
   return (
     <>
-      <section className="centralize flex-col gap-6 pt-10 relative flex-1">
+      <section className="centralize flex-col gap-10 pt-14 relative flex-1">
         <div className="centralize w-full px-10">
           <ButtonHistorial />
         </div>
         <div className="centralize w-full centralize px-10">
-          <div className="aspect-square border-2 w-full max-w-[220px]"></div>
+          <div className="aspect-square w-full max-w-[220px]">
+            <FlowField />
+          </div>
         </div>
         <div className="centralize w-full centralize flex-col gap-4 px-10 text-center">
           <Text size={"big"} as="h1" variant={"title"}>
@@ -29,13 +32,13 @@ export default async function HomePage() {
       </section>
       {/* bottom busqueda */}
       <div className="w-full h-20 absolute bottom-0 left-0 flex items-end justify-center">
-        <div className="h-full aspect-square bg-transparent rounded-bl-none rounded-full round-left"></div>
-        <div className="runded-t-full bg-white w-14 h-full rounded-t-full p-1">
-          <button className="bg-amber-400 rounded-full w-full aspect-square centralize">
+        <div className="h-full aspect-square  rounded-bl-none rounded-full round-left"></div>
+        <div className="runded-t-full bg-white w-14 h-full rounded-t-full p-1 z-10">
+          <button className="bg-cards hover:bg-cards/90 transition-colors glassomorphism shadow-2xl rounded-full w-full aspect-square centralize">
             <QrCode />
           </button>
         </div>
-        <div className="h-full aspect-square bg-transparent rounded-br-none rounded-full round-right"></div>
+        <div className="h-full aspect-square  rounded-br-none rounded-full round-right"></div>
       </div>
     </>
   );

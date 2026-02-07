@@ -11,13 +11,23 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/shared/components/atoms/Text";
+import { useProductQuery } from "@/shared/hooks/useProductQuery";
 
 export const ManualSearch = () => {
   const [barcode, setBarcode] = useState("");
+  const [searchId, setSearchId] = useState<string | null>(null);
+
+  // Usamos el hook de React Query que definimos antes
+  const { data, isLoading, isError } = useProductQuery(searchId);
 
   const handleSearch = () => {
-    console.log("Buscando código:", barcode);
+    if (barcode.length >= 6) {
+      setSearchId(barcode);
+    }
   };
+
+  console.log({ isError });
+  console.log({ data });
 
   return (
     <Dialog>
@@ -48,8 +58,13 @@ export const ManualSearch = () => {
             type="number"
             className="text-lg py-6"
           />
-          <Button onClick={handleSearch} className="w-full" size="lg">
-            Buscar Producto
+          <Button
+            onClick={handleSearch}
+            className="w-full"
+            size="lg"
+            disabled={isLoading}
+          >
+            {isLoading ? "Buscando..." : "Buscar Producto"}
           </Button>
         </div>
       </DialogContent>

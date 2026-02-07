@@ -3,6 +3,7 @@ import { Inter, Raleway, Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import { cn } from "@/shared/utils";
+import QueryProvider from "@/components/QueryProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -48,15 +49,17 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(plusJakartaSans.variable, raleway.variable, inter.variable)}
     >
-      <body className={"min-h-screen bg-background antialiased"}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+      <body className={"min-h-screen bg-background antialiased shadow-inner"}>
+        <QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

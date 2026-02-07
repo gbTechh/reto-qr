@@ -10,6 +10,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.563.0",
@@ -25,6 +26,7 @@
     "@commitlint/config-conventional": "^20.4.1",
     "@commitlint/types": "^20.4.0",
     "@tailwindcss/postcss": "^4",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

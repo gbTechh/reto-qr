@@ -164,6 +164,20 @@
   box-shadow: 14px 19px 0 -7px #fff;
 }
 
+.glassomorphism {
+  /* 1. Fondo semi-transparente (ajusta el alpha a tu gusto) */
+
+  /* 2. El efecto de desenfoque (La clave del Glassmorphism) */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Obligatorio para Safari */
+
+  /* 3. Borde sutil para dar definición "vidriosa" */
+
+  /* 4. Sombra suave para separar del fondo animado */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* 5. Evita que el contenido toque los bordes */
+}
 /* .text-fluid-title-sm {
   font-size: var(--text-sm);
   line-height: 1rem;
