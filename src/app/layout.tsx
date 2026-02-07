@@ -1,9 +1,8 @@
 import { ThemeProvider } from "@/shared/components/theme-provider";
-import { Inter } from "next/font/google";
+import { Inter, Raleway, Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import "@/app/globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { cn } from "@/shared/utils";
 
 export const metadata: Metadata = {
   title: {
@@ -23,14 +22,33 @@ export const metadata: Metadata = {
   },
 };
 
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  variable: "--font-raleway",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html
+      lang="es"
+      suppressHydrationWarning
+      className={cn(plusJakartaSans.variable, raleway.variable, inter.variable)}
+    >
+      <body className={"min-h-screen bg-background antialiased"}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

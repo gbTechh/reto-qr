@@ -1,17 +1,42 @@
+import { ButtonHistorial } from "@/components/atoms/ButtonHistorial";
 import { Text } from "@/components/atoms/Text";
+import { ManualSearch } from "@/components/organism/ManualSearch";
+import { QrCode } from "lucide-react";
 
 // 2. Componente de la Página (Contenido visual)
 export default async function HomePage() {
   return (
-    <section className="flex flex-col items-center justify-center">
-      <div className="text-center mt-32 flex flex-col items-center gap-8 justify-center">
-        {/* Aquí mostramos el texto del Hero que no es parte del SEO */}
-        <div className="w-full lg:w-1/2 block">
-          <Text></Text>
+    <>
+      <section className="centralize flex-col gap-6 pt-10 relative flex-1">
+        <div className="centralize w-full px-10">
+          <ButtonHistorial />
         </div>
+        <div className="centralize w-full centralize px-10">
+          <div className="aspect-square border-2 w-full max-w-[220px]"></div>
+        </div>
+        <div className="centralize w-full centralize flex-col gap-4 px-10 text-center">
+          <Text size={"big"} as="h1" variant={"title"}>
+            Bienvenido
+          </Text>
+          <Text size={"md"} variant={"base"} as="p" color={"contrast"}>
+            Explora tu historial de trabajos de Go y descubre tus patrones de
+            uso.
+          </Text>
+        </div>
+        <div>
+          <ManualSearch />
+        </div>
+      </section>
+      {/* bottom busqueda */}
+      <div className="w-full h-20 absolute bottom-0 left-0 flex items-end justify-center">
+        <div className="h-full aspect-square bg-transparent rounded-bl-none rounded-full round-left"></div>
+        <div className="runded-t-full bg-white w-14 h-full rounded-t-full p-1">
+          <button className="bg-amber-400 rounded-full w-full aspect-square centralize">
+            <QrCode />
+          </button>
+        </div>
+        <div className="h-full aspect-square bg-transparent rounded-br-none rounded-full round-right"></div>
       </div>
-
-      {/* Tu lógica de trabajos de Go iría aquí abajo */}
-    </section>
+    </>
   );
 }
