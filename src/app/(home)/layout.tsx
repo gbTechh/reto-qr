@@ -5,7 +5,7 @@ export default function HistorialLayout({
 }) {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <main className="flex-1 h-screen relative">{children}</main>
+      <main className="flex-1 h-dvh relative">{children}</main>
     </div>
   );
 }
