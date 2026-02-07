@@ -2,6 +2,7 @@ import { ButtonHistorial } from "@/components/atoms/ButtonHistorial";
 import { Text } from "@/components/atoms/Text";
 import { FlowField } from "@/components/molecules/FlowField";
 import { ManualSearch } from "@/components/organism/ManualSearch";
+import { ProductDetailSheet } from "@/components/organism/ProductDetailSheet";
 import { QrCode } from "lucide-react";
 
 // 2. Componente de la Página (Contenido visual)
@@ -28,6 +29,7 @@ export default async function HomePage() {
         </div>
         <div>
           <ManualSearch />
+          <ProductDetailSheet />
         </div>
       </section>
       {/* bottom busqueda */}

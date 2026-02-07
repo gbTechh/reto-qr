@@ -7,7 +7,15 @@ export const useProductQuery = (barcode: string | null) => {
   return useQuery({
     queryKey: ["product", barcode],
 
-    queryFn: () => getProductAction(barcode!),
+    queryFn: async () => {
+      const result = await getProductAction(barcode!);
+
+      if (!result.success) {
+        throw new Error(result.error || "Error desconocido");
+      }
+
+      return result.data;
+    },
 
     enabled: !!barcode && barcode.length >= 6 && barcode.length <= 13,
 

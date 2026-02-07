@@ -4,14 +4,16 @@
 import { ActionResponse } from "@/shared/utils/types";
 import { IProduct } from "./types";
 import { mappedResponseProductsData } from "./mapper";
+import { productSchema } from "./validation";
 
 export async function getProductAction(
   barcode: string,
 ): Promise<ActionResponse<IProduct>> {
-  if (!/^\d{6,13}$/.test(barcode)) {
+  const validation = productSchema.safeParse({ barcode });
+  if (!validation.success) {
     return {
       success: false,
-      error: "Formato de código inválido (6-13 dígitos)",
+      error: validation.error?.issues[0].message,
       code: "INVALID_FORMAT",
     };
   }
