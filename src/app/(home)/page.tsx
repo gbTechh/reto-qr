@@ -1,12 +1,43 @@
+"use client";
+
 import { ButtonHistorial } from "@/components/atoms/ButtonHistorial";
 import { Text } from "@/components/atoms/Text";
 import { FlowField } from "@/components/molecules/FlowField";
+import { ScannerDrawer } from "@/components/molecules/ScannerDrawer";
 import { ManualSearch } from "@/components/organism/ManualSearch";
 import { ProductDetailSheet } from "@/components/organism/ProductDetailSheet";
+import { useProductStore } from "@/features/product/store";
+import { useProductQuery } from "@/shared/hooks/useProductQuery";
 import { QrCode } from "lucide-react";
+import { useEffect, useState } from "react";
 
-// 2. Componente de la Página (Contenido visual)
 export default function HomePage() {
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [scannedCode, setScannedCode] = useState<string | null>(null);
+
+  // Reutilizamos tu hook de búsqueda
+  const { data } = useProductQuery(scannedCode);
+  const openOnlySheet = useProductStore((s) => s.openOnlySheet);
+  const addToHistory = useProductStore((s) => s.addToHistory);
+
+  // Cuando el scanner encuentra algo, activamos la búsqueda
+  const handleScanSuccess = (code: string) => {
+    setScannedCode(code);
+  };
+
+  useEffect(() => {
+    if (data) {
+      openOnlySheet(data);
+
+      const timer = setTimeout(() => {
+        addToHistory(data);
+        setScannedCode(null);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [data, openOnlySheet, addToHistory]);
+
   return (
     <>
       <section className="centralize flex-col gap-10 pt-14 relative flex-1">
@@ -36,12 +67,20 @@ export default function HomePage() {
       <div className="w-full h-20 absolute bottom-0 left-0 flex items-end justify-center">
         <div className="h-full aspect-square  rounded-bl-none rounded-full round-left"></div>
         <div className="runded-t-full bg-white w-14 h-full rounded-t-full p-1 z-10">
-          <button className="bg-cards hover:bg-cards/90 transition-colors glassomorphism shadow-2xl rounded-full w-full aspect-square centralize">
+          <button
+            onClick={() => setIsScannerOpen(true)}
+            className="bg-cards hover:bg-cards/90 transition-colors glassomorphism shadow-2xl rounded-full w-full aspect-square centralize"
+          >
             <QrCode />
           </button>
         </div>
         <div className="h-full aspect-square  rounded-br-none rounded-full round-right"></div>
       </div>
+      <ScannerDrawer
+        isOpen={isScannerOpen}
+        onOpenChange={setIsScannerOpen}
+        onScanSuccess={handleScanSuccess}
+      />
     </>
   );
 }
