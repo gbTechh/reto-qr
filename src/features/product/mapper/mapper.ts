@@ -10,7 +10,7 @@ export const mappedResponseProductsData = (
     image: data.product?.image_url || "/images/no_image_dark.webp",
     price: generateMockPrice(data.code),
     category:
-      data.product?.categories_tags?.[0].replace("en:", "") || "General",
+      data.product?.categories_tags?.[0]?.replace("en:", "") || "General",
   };
 };
 

@@ -66,7 +66,7 @@ export const ProductDetailSheet = () => {
                 />
               </div>
             </div>
-            <div className="mt-4 space-y-2 relative max-w-[400px] mx-auto w-full bottom-0 left-0 py-4">
+            <div className="mt-4 space-y-1 relative max-w-[400px] mx-auto w-full bottom-0 left-0 py-4">
               <div className="bg-cards/95 border rounded-t-xl rounded-b-4xl w-full">
                 <Text className="capitalize w-full text-center p-1" size={"sm"}>
                   {selectedProduct.category}
