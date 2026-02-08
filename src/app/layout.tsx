@@ -49,7 +49,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(plusJakartaSans.variable, raleway.variable, inter.variable)}
     >
-      <body className={"min-h-screen bg-background antialiased shadow-inner"}>
+      <body className={"min-h-dvh bg-background antialiased shadow-inner"}>
         <QueryProvider>
           <ThemeProvider
             attribute="class"

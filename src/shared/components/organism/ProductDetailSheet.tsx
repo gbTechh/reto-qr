@@ -23,7 +23,7 @@ export const ProductDetailSheet = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={closeDetails}>
-      <SheetContent side="bottom" className="h-[70vh] rounded-t-3xl">
+      <SheetContent side="bottom" className="h-[85vh] rounded-t-3xl">
         <SheetHeader>
           <SheetTitle className="border-b pb-3">
             <Text size="lg" as="span">
