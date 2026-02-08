@@ -65,6 +65,7 @@
 
   /* --- DIMENSIONES DE TEXTO FLUIDAS --- */
   /* Nota: Definir --text-xxx genera automáticamente la clase .text-xxx */
+  --text-xs: clamp(0.625rem, 0.5866rem + 0.1705vw, 0.7188rem);
   --text-sm: clamp(0.8125rem, 0.7908rem + 0.1087vw, 0.875rem);
   --text-md: clamp(0.875rem, 0.8315rem + 0.2174vw, 1rem);
   --text-lg: clamp(1rem, 0.9348rem + 0.3261vw, 1.1875rem);
@@ -165,18 +166,15 @@
 }
 
 .glassomorphism {
-  /* 1. Fondo semi-transparente (ajusta el alpha a tu gusto) */
-
-  /* 2. El efecto de desenfoque (La clave del Glassmorphism) */
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* Obligatorio para Safari */
-
-  /* 3. Borde sutil para dar definición "vidriosa" */
-
-  /* 4. Sombra suave para separar del fondo animado */
+  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-
-  /* 5. Evita que el contenido toque los bordes */
+}
+.no-scrollbar::-webkit-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
 }
 /* .text-fluid-title-sm {
   font-size: var(--text-sm);

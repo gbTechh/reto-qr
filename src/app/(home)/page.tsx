@@ -6,7 +6,7 @@ import { ProductDetailSheet } from "@/components/organism/ProductDetailSheet";
 import { QrCode } from "lucide-react";
 
 // 2. Componente de la Página (Contenido visual)
-export default async function HomePage() {
+export default function HomePage() {
   return (
     <>
       <section className="centralize flex-col gap-10 pt-14 relative flex-1">

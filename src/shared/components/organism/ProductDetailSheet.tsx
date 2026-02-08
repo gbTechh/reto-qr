@@ -7,12 +7,10 @@ import {
   SheetTitle,
 } from "@/shared/components/ui/sheet";
 import { useProductStore } from "@/features/product/store";
-import Image from "next/image";
 import { Text } from "../atoms/Text";
-import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { BookmarkIcon } from "lucide-react";
-import { ProductImage } from "./ProductImage";
+import { ProductImage } from "../molecules/ProductImage";
 
 export const ProductDetailSheet = () => {
   const { selectedProduct, isOpen, closeDetails } = useProductStore();

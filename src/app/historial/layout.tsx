@@ -4,7 +4,7 @@ export default function HistorialLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex h-full flex-col">
       <main className="flex-1 h-dvh relative">{children}</main>
     </div>
   );

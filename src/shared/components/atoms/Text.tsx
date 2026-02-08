@@ -11,6 +11,7 @@ const textVariants = cva("transition-colors", {
       custom: "",
     },
     size: {
+      xs: "text-xs",
       sm: "text-sm",
       md: "text-md",
       lg: "text-lg",
@@ -47,6 +48,7 @@ export const Text = ({
   className,
   variant,
   size,
+  color,
   as: Comp = "p",
   ref,
   ...props
@@ -56,7 +58,7 @@ export const Text = ({
       // @ts-expect-error - Sigue siendo útil por la naturaleza polimórfica del componente
 
       ref={ref}
-      className={cn(textVariants({ variant, size, className }))}
+      className={cn(textVariants({ variant, size, color, className }))}
       {...props}
     />
   );
