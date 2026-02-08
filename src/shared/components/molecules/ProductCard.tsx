@@ -1,13 +1,24 @@
 import { IProduct } from "@/features/product/types";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Card, CardFooter, CardHeader } from "../ui/card";
 import { Text } from "../atoms/Text";
 import { ProductImage } from "./ProductImage";
 import { ChevronRight, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import { useProductStore } from "@/features/product/store";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
-// Este componente se reinicia solo gracias a la prop 'key'
 export const ProductCard = ({ product }: { product: IProduct }) => {
+  const removeFromHistory = useProductStore((s) => s.removeFromHistory);
   const openOnlySheet = useProductStore((s) => s.openOnlySheet);
   return (
     <Card className="mx-auto w-full max-w-sm">
@@ -24,14 +35,37 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
           </div>
           <div className="flex flex-col w-2/3 flex-1 gap-3 justify-between items-end h-full">
             <div className="flex items-start gap-2 justify-between">
-              <Button
-                variant="secondary"
-                color="danger"
-                size="icon"
-                className="rounded-full"
-              >
-                <Trash />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    size="icon"
+                    className="rounded-full text-muted-foreground hover:text-destructive transition-colors"
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      ¿Eliminar del historial?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta acción quitará a <strong>{product.name}</strong> de
+                      tu lista de productos recientes.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      onClick={() => removeFromHistory(product.id)}
+                    >
+                      Eliminar
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
             <div className="flex gap-1 flex-col items-end">
               <Text
