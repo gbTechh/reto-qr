@@ -10,13 +10,10 @@ export default async function HistorialPage() {
   return (
     <>
       <section className="centralize flex-col gap-10 pt-14 relative flex-1">
-        <div className="centralize w-full px-10">
-          <ButtonHistorial />
-        </div>
         <div className="centralize w-full centralize px-10">
-          <div className="aspect-square w-full max-w-[220px]">
-            <FlowField />
-          </div>
+          <Text as="h1" size={"2xl"} variant={"title"}>
+            Historial de productos
+          </Text>
         </div>
         <div className="centralize w-full centralize flex-col gap-4 px-10 text-center">
           <Text size={"big"} as="h1" variant={"title"}>

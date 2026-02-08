@@ -7,7 +7,7 @@ export const mappedResponseProductsData = (
     id: data.code,
     name: data.product?.product_name || "Producto sin nombre",
     brand: data.product?.brands || "Marca genérica",
-    image: data.product?.image_front_small_url || "/placeholder-product.png",
+    image: data.product?.image_url || "/images/no_image_dark.webp",
     price: generateMockPrice(data.code),
     category:
       data.product?.categories_tags?.[0].replace("en:", "") || "General",

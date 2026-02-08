@@ -15,6 +15,7 @@ export interface IOpenFoodFactsResponse {
     product_name?: string;
     brands?: string;
     image_front_small_url?: string;
+    image_url?: string;
     categories_tags?: string[];
   };
 }
