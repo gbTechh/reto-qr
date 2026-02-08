@@ -18,16 +18,21 @@ import { useProductStore } from "@/features/product/store";
 export const ManualSearch = () => {
   const [barcode, setBarcode] = useState("");
   const [searchId, setSearchId] = useState<string | null>(null);
-
   // Usamos el hook de React Query que definimos antes
   const { data, isLoading, isError, error } = useProductQuery(searchId);
-  const openDetails = useProductStore((s) => s.openDetails);
+  const openOnlySheet = useProductStore((s) => s.openOnlySheet);
+  const addToHistory = useProductStore((s) => s.addToHistory);
 
   useEffect(() => {
     if (data) {
-      openDetails(data);
+      openOnlySheet(data);
+      const timer = setTimeout(() => {
+        addToHistory(data);
+      }, 500);
+
+      return () => clearTimeout(timer);
     }
-  }, [data, openDetails]);
+  }, [data, addToHistory, openOnlySheet]);
 
   const handleSearch = () => {
     const result = productSchema.safeParse({ barcode });
@@ -36,10 +41,10 @@ export const ManualSearch = () => {
       return;
     }
     if (barcode === searchId && data) {
-      openDetails(data);
-    } else {
-      setSearchId(barcode);
+      openOnlySheet(data);
+      return;
     }
+    setSearchId(barcode);
   };
 
   return (

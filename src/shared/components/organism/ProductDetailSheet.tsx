@@ -9,17 +9,13 @@ import {
 import { useProductStore } from "@/features/product/store";
 import Image from "next/image";
 import { Text } from "../atoms/Text";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { BookmarkIcon } from "lucide-react";
+import { ProductImage } from "./ProductImage";
 
 export const ProductDetailSheet = () => {
   const { selectedProduct, isOpen, closeDetails } = useProductStore();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  const fallbackImage = "/images/no_image_dark.webp";
 
   return (
     <Sheet open={isOpen} onOpenChange={closeDetails}>
@@ -40,35 +36,18 @@ export const ProductDetailSheet = () => {
                   <BookmarkIcon data-icon="inline-end" />
                 </Badge>
               </div>
-              <div
+              <ProductImage
                 key={selectedProduct.id}
-                className="relative block w-full h-full max-w-[400px] aspect-square overflow-hidden rounded-3xl bg-muted"
-              >
-                {isLoading && (
-                  <div className="absolute max-w-[400px] w-full aspect-square inset-0 animate-pulse bg-gray-600 flex items-center justify-center text-xs text-muted-foreground">
-                    Cargando...
-                  </div>
-                )}
-
-                <Image
-                  src={hasError ? fallbackImage : selectedProduct.image}
-                  alt={selectedProduct.name}
-                  width={250}
-                  height={250}
-                  className={`w-full h-full object-cover transition-opacity duration-300 ${
-                    isLoading ? "opacity-0" : "opacity-100"
-                  }`}
-                  onLoadingComplete={() => setIsLoading(false)}
-                  onError={() => {
-                    setHasError(true);
-                    setIsLoading(false);
-                  }}
-                />
-              </div>
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+              />
             </div>
             <div className="mt-4 space-y-1 relative max-w-[400px] mx-auto w-full bottom-0 left-0 py-4">
               <div className="bg-cards/95 border rounded-t-xl rounded-b-4xl w-full">
-                <Text className="capitalize w-full text-center p-1" size={"sm"}>
+                <Text
+                  className="text-white apitalize w-full text-center p-1"
+                  size={"sm"}
+                >
                   {selectedProduct.category}
                 </Text>
                 <div className="bg-white/90 glassomorphism rounded-3xl w-full p-3 flex justify-between items-center">

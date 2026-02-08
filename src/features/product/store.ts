@@ -6,7 +6,8 @@ interface ProductStore {
   selectedProduct: IProduct | null;
   isOpen: boolean;
   history: IProduct[]; // El historial vive aquí
-  openDetails: (product: IProduct) => void;
+  openOnlySheet: (product: IProduct) => void;
+  addToHistory: (product: IProduct) => void;
   closeDetails: () => void;
   clearHistory: () => void;
 }
@@ -17,20 +18,13 @@ export const useProductStore = create<ProductStore>()(
       selectedProduct: null,
       isOpen: false,
       history: [],
-
-      openDetails: (product) =>
+      openOnlySheet: (product: IProduct) =>
+        set({ selectedProduct: product, isOpen: true }),
+      addToHistory: (product) =>
         set((state) => {
           const cleanHistory = state.history.filter((p) => p.id !== product.id);
-
-          const newHistory = [product, ...cleanHistory].slice(0, 15);
-
-          return {
-            selectedProduct: product,
-            isOpen: true,
-            history: newHistory,
-          };
+          return { history: [product, ...cleanHistory].slice(0, 15) };
         }),
-
       closeDetails: () => set({ isOpen: false }),
 
       clearHistory: () => set({ history: [] }),
