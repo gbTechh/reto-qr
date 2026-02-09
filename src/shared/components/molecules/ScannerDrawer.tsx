@@ -23,153 +23,119 @@ export const ScannerDrawer = ({
   onOpenChange,
   onScanSuccess,
 }: ScannerDrawerProps) => {
-  const [facingMode, setFacingMode] = useState<"environment" | "user">(
+  const [desiredCamera, setDesiredCamera] = useState<"environment" | "user">(
     "environment",
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const scannerRef = useRef<Html5Qrcode | null>(null);
 
-  // 1. CORRECCIÓN: Definimos stopScanner ANTES del useEffect para evitar el error de "accessed before initialization"
-  // Usamos useCallback para que sea estable y no rompa el array de dependencias
+  // Refs para mantener el control sin re-renderizar
+  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const isScanningRef = useRef<boolean>(false);
+
+  // Función robusta para detener el scanner
   const stopScanner = useCallback(async () => {
-    if (scannerRef.current && scannerRef.current.isScanning) {
+    if (scannerRef.current && isScanningRef.current) {
       try {
         await scannerRef.current.stop();
         scannerRef.current.clear();
+        isScanningRef.current = false;
       } catch (err) {
-        console.error("Error stopping scanner", err);
+        console.warn("Scanner ya estaba detenido o falló al detenerse", err);
       }
     }
   }, []);
 
+  const startScanner = useCallback(async () => {
+    await stopScanner();
+
+    if (!document.getElementById("reader")) return;
+
+    if (!scannerRef.current) {
+      scannerRef.current = new Html5Qrcode("reader", {
+        verbose: false,
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.EAN_13,
+          Html5QrcodeSupportedFormats.EAN_8,
+          Html5QrcodeSupportedFormats.QR_CODE,
+        ],
+      });
+    }
+
+    try {
+      const devices = await Html5Qrcode.getCameras();
+
+      if (!devices || devices.length === 0) {
+        throw new Error("No se encontraron cámaras");
+      }
+
+      let selectedDeviceId = devices[0].id;
+
+      if (desiredCamera === "environment") {
+        const backCamera = devices.find(
+          (device) =>
+            device.label.toLowerCase().includes("back") ||
+            device.label.toLowerCase().includes("trasera") ||
+            device.label.toLowerCase().includes("environment"),
+        );
+        selectedDeviceId = backCamera
+          ? backCamera.id
+          : devices[devices.length - 1].id;
+      } else {
+        const frontCamera = devices.find(
+          (device) =>
+            device.label.toLowerCase().includes("front") ||
+            device.label.toLowerCase().includes("delantera") ||
+            device.label.toLowerCase().includes("user"),
+        );
+        selectedDeviceId = frontCamera ? frontCamera.id : devices[0].id;
+      }
+
+      if (scannerRef.current) {
+        await scannerRef.current.start(
+          selectedDeviceId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0,
+          },
+          (decodedText) => {
+            onScanSuccess(decodedText);
+            onOpenChange(false);
+            stopScanner();
+          },
+          () => {},
+        );
+        isScanningRef.current = true;
+        setErrorMessage(null);
+      }
+    } catch (err) {
+      console.warn("Error crítico al iniciar cámara:", err);
+      setErrorMessage(
+        "Error de cámara: " +
+          (err instanceof Error ? err.message : "Desconocido"),
+      );
+    }
+  }, [desiredCamera, onOpenChange, onScanSuccess, stopScanner]);
+
   useEffect(() => {
     if (isOpen) {
-      // Limpiar mensaje de error al abrir
-      setErrorMessage(null);
-
-      const timer = setTimeout(async () => {
-        const element = document.getElementById("reader");
-        if (!element) return;
-
-        // Limpiamos instancia previa si existe por seguridad
-        if (scannerRef.current) {
-          try {
-            await stopScanner();
-          } catch (e) {}
-        }
-
-        // Verificar que el navegador soporte getUserMedia
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          setErrorMessage(
-            "Tu navegador no soporta acceso a la cámara. Por favor, usa un navegador moderno.",
-          );
-          console.warn("El navegador no soporta getUserMedia");
-          return;
-        }
-
-        // Verificar que hay cámaras disponibles
-        try {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          const cameras = devices.filter(
-            (device) => device.kind === "videoinput",
-          );
-
-          if (cameras.length === 0) {
-            setErrorMessage(
-              "No se encontró ninguna cámara en este dispositivo.",
-            );
-            console.warn("No hay cámaras disponibles en el dispositivo");
-            return;
-          }
-        } catch (e) {
-          setErrorMessage("Error al verificar las cámaras disponibles.");
-          console.warn("Error al enumerar dispositivos:", e);
-          return;
-        }
-
-        // 2. CORRECCIÓN: 'formatsToSupport' se pasa AQUÍ, en el constructor
-        const scanner = new Html5Qrcode("reader", {
-          formatsToSupport: [
-            Html5QrcodeSupportedFormats.EAN_13,
-            Html5QrcodeSupportedFormats.EAN_8,
-            Html5QrcodeSupportedFormats.QR_CODE,
-          ],
-          verbose: false,
-        });
-
-        scannerRef.current = scanner;
-
-        const config = {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-          aspectRatio: 1.0,
-        };
-
-        const onScan = (decodedText: string) => {
-          onScanSuccess(decodedText);
-          onOpenChange(false);
-          stopScanner();
-        };
-
-        // Intentar iniciar cámara con diferentes estrategias
-        try {
-          // Estrategia 1: Usar facingMode ideal (no exact) - más flexible
-          await scanner.start(
-            { facingMode: { ideal: facingMode } },
-            config,
-            onScan,
-            () => {},
-          );
-        } catch (err) {
-          console.warn(
-            "No se pudo usar facingMode ideal, intentando sin restricciones:",
-            err,
-          );
-
-          try {
-            // Estrategia 2: Sin especificar facingMode - usa la cámara por defecto
-            await scanner.start({}, config, onScan, () => {});
-          } catch (e) {
-            // Estrategia 3: Intentar con un deviceId específico de la primera cámara encontrada
-            try {
-              const devices = await navigator.mediaDevices.enumerateDevices();
-              const cameras = devices.filter(
-                (device) => device.kind === "videoinput",
-              );
-
-              if (cameras.length > 0 && cameras[0].deviceId) {
-                await scanner.start(
-                  { deviceId: { exact: cameras[0].deviceId } },
-                  config,
-                  onScan,
-                  () => {},
-                );
-              } else {
-                throw new Error("No se pudo identificar una cámara válida");
-              }
-            } catch (finalError) {
-              setErrorMessage(
-                "No se pudo acceder a la cámara. Por favor, verifica los permisos en tu navegador.",
-              );
-              console.warn("Error al iniciar cámara:", finalError);
-            }
-          }
-        }
+      const timer = setTimeout(() => {
+        startScanner();
       }, 300);
 
       return () => {
         clearTimeout(timer);
-        // Importante: No llamamos a stopScanner() aquí directamente si el componente se desmonta
-        // porque puede causar promesas pendientes, pero intentamos limpiar lo posible.
-        if (scannerRef.current?.isScanning) {
-          scannerRef.current.stop().catch(console.error);
-        }
+        stopScanner();
       };
+    } else {
+      stopScanner();
     }
-  }, [isOpen, facingMode, onOpenChange, onScanSuccess, stopScanner]);
+  }, [isOpen, startScanner, stopScanner]);
 
   const handleSwitchCamera = () => {
-    setFacingMode((prev) => (prev === "environment" ? "user" : "environment"));
+    setDesiredCamera((prev) =>
+      prev === "environment" ? "user" : "environment",
+    );
   };
 
   return (
@@ -195,12 +161,18 @@ export const ScannerDrawer = ({
             </Button>
           </div>
         </SheetHeader>
-
         {errorMessage ? (
-          <div className="w-full max-w-md mx-auto p-6 bg-destructive/10 border border-destructive/30 rounded-2xl">
-            <Text color="grey" size="sm" className="text-center">
+          <div className="w-full max-w-md mx-auto p-2 bg-destructive/20 border border-destructive/30 rounded-2xl flex flex-col items-center justify-center">
+            <Text color="primary" size="sm" className="text-center">
               ⚠️ {errorMessage}
             </Text>
+            <Button
+              variant="link"
+              className="text-white underline mt-1 h-auto p-0"
+              onClick={() => startScanner()}
+            >
+              Reintentar
+            </Button>
           </div>
         ) : (
           <div
