@@ -84,6 +84,15 @@ Una aplicación web de alto rendimiento diseñada para escanear códigos de barr
 
 **Por qué:** Para garantizar la integridad del código fuente antes de que llegue al repositorio. Se configuraron hooks de `pre-commit` (para ejecutar linters y formateo) y `pre-push` (para verificar los tests). Esto adopta la filosofía de **"Shift-Left Testing"**, detectando errores en la máquina del desarrollador en lugar de esperar a que fallen en el pipeline de CI/CD, asegurando así un historial de commits limpio y estable.
 
+### 7. Arquitectura Modular y Atomic Design
+
+**Decisión:** Adopción de una estructura híbrida: **Atomic Design** para componentes de UI compartidos y **Feature-based Architecture** para la lógica de negocio.
+
+**Por qué:**
+
+- **Escalabilidad:** Al encapsular la lógica (stores, hooks, validaciones) dentro de carpetas de dominio (`features/product`), se evita el "spaghetti code" y se facilita la navegación. Si eliminas la funcionalidad de "Producto", sabes exactamente qué carpeta borrar.
+- **Reutilización:** La organización en Átomos, Moléculas y Organismos en `shared/components` garantiza que los componentes visuales sean puros, testeables y reutilizables en cualquier parte de la aplicación, desacoplándolos de la lógica de negocio específica.
+
 ---
 
 # Instalación y Despliegue
