@@ -40,6 +40,7 @@ export default function HomePage() {
     if (isError) {
       toast.error("Producto no encontrado", {
         description: `El código ${scannedCode} no está registrado en el sistema.`,
+        position: "top-center",
       });
     }
   }, [isError, scannedCode]);

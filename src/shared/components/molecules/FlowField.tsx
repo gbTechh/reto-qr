@@ -113,7 +113,7 @@ export const FlowField = ({ isScanning = false }: CircularWaveProps) => {
 
     const animate = () => {
       // --- CONTROL DE VELOCIDAD ---
-      const speedMultiplier = isScanningRef.current ? 5 : 1;
+      const speedMultiplier = isScanningRef.current ? 6 : 1;
       timeRef.current += 1 * speedMultiplier;
 
       const targetCompression = isScanningRef.current ? 1 : 0;

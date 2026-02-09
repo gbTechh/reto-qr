@@ -180,28 +180,3 @@
   content-visibility: auto;
   contain-intrinsic-size: 250px;
 }
-
-/* .text-fluid-title-sm {
-  font-size: var(--text-sm);
-  line-height: 1rem;
-}
-.text-fluid-title-md {
-  font-size: var(--text-md);
-  line-height: 1.2rem;
-}
-.text-fluid-title-lg {
-  font-size: var(--text-lg);
-  line-height: 1.6rem;
-}
-.text-fluid-title-xl {
-  font-size: var(--text-xl);
-  line-height: 2rem;
-}
-.text-fluid-title-2xl {
-  font-size: var(--text-2xl);
-  line-height: 2.5rem;
-}
-.text-fluid-title-big {
-  font-size: var(--text-big);
-  line-height: 2.5rem;
-} */
