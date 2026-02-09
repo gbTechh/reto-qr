@@ -15,12 +15,10 @@ export default function HomePage() {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scannedCode, setScannedCode] = useState<string | null>(null);
 
-  // Reutilizamos tu hook de búsqueda
   const { data } = useProductQuery(scannedCode);
   const openOnlySheet = useProductStore((s) => s.openOnlySheet);
   const addToHistory = useProductStore((s) => s.addToHistory);
 
-  // Cuando el scanner encuentra algo, activamos la búsqueda
   const handleScanSuccess = (code: string) => {
     setScannedCode(code);
   };
