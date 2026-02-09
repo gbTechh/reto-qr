@@ -119,7 +119,7 @@ export const ScannerDrawer = ({
     if (isOpen) {
       const timer = setTimeout(() => {
         startScanner();
-      }, 150);
+      }, 200);
 
       return () => {
         clearTimeout(timer);
