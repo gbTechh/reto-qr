@@ -28,11 +28,9 @@ export const ScannerDrawer = ({
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Refs para mantener el control sin re-renderizar
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const isScanningRef = useRef<boolean>(false);
 
-  // Función robusta para detener el scanner
   const stopScanner = useCallback(async () => {
     if (scannerRef.current && isScanningRef.current) {
       try {
@@ -121,7 +119,7 @@ export const ScannerDrawer = ({
     if (isOpen) {
       const timer = setTimeout(() => {
         startScanner();
-      }, 300);
+      }, 150);
 
       return () => {
         clearTimeout(timer);
