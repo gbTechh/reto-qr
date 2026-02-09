@@ -25,7 +25,7 @@ class LineDash {
   y: number = 0;
 
   constructor(row: number, col: number) {
-    // Calculamos la posición base una sola vez en el constructor
+    // Calculo de la posición base
     this.gridX = (col - (GRID_DENSITY - 1) / 2) * SPACING;
     this.gridY = (row - (GRID_DENSITY - 1) / 2) * SPACING;
     this.distanceFromCenter = Math.sqrt(this.gridX ** 2 + this.gridY ** 2);
@@ -113,7 +113,7 @@ export const FlowField = ({ isScanning = false }: CircularWaveProps) => {
 
     const animate = () => {
       // --- CONTROL DE VELOCIDAD ---
-      const speedMultiplier = isScanningRef.current ? 4 : 1;
+      const speedMultiplier = isScanningRef.current ? 5 : 1;
       timeRef.current += 1 * speedMultiplier;
 
       const targetCompression = isScanningRef.current ? 1 : 0;

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { cn } from "@/shared/utils";
 import QueryProvider from "@/components/QueryProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -58,6 +59,7 @@ export default function RootLayout({
             forcedTheme="dark"
             disableTransitionOnChange
           >
+            <Toaster />
             {children}
           </ThemeProvider>
         </QueryProvider>

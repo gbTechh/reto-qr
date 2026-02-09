@@ -10,11 +10,12 @@ import { useProductStore } from "@/features/product/store";
 import { useProductQuery } from "@/shared/hooks/useProductQuery";
 import { QrCode } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function HomePage() {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scannedCode, setScannedCode] = useState<string | null>(null);
-  const { data, isLoading } = useProductQuery(scannedCode);
+  const { data, isLoading, isError } = useProductQuery(scannedCode);
   const openOnlySheet = useProductStore((s) => s.openOnlySheet);
   const addToHistory = useProductStore((s) => s.addToHistory);
 
@@ -34,6 +35,14 @@ export default function HomePage() {
       return () => clearTimeout(timer);
     }
   }, [data, openOnlySheet, addToHistory]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Producto no encontrado", {
+        description: `El código ${scannedCode} no está registrado en el sistema.`,
+      });
+    }
+  }, [isError, scannedCode]);
 
   return (
     <>
@@ -64,7 +73,10 @@ export default function HomePage() {
         <div className="h-full aspect-square  rounded-bl-none rounded-full round-left"></div>
         <div className="runded-t-full bg-white w-14 h-full rounded-t-full p-1 z-10">
           <button
-            onClick={() => setIsScannerOpen(true)}
+            onClick={() => {
+              setScannedCode(null);
+              setIsScannerOpen(true);
+            }}
             className="bg-cards hover:bg-cards/90 transition-colors glassomorphism shadow-2xl rounded-full w-full aspect-square centralize"
           >
             <QrCode />
