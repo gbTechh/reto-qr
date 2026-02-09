@@ -44,7 +44,7 @@ export default function HomePage() {
         </div>
         <div className="centralize w-full centralize px-10">
           <div className="aspect-square w-full max-w-[220px]">
-            <FlowField />
+            <FlowField isScanning={isScannerOpen} />
           </div>
         </div>
         <div className="centralize w-full centralize flex-col gap-4 px-10 text-center">
