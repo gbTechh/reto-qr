@@ -170,11 +170,22 @@
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
+@media (prefers-reduced-motion) {
+  .glassomorphism {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+}
 .no-scrollbar::-webkit-scrollbar {
   scrollbar-width: none;
 }
 .no-scrollbar {
   scrollbar-width: none;
+}
+.product-detail-content {
+  content-visibility: auto;
+  contain-intrinsic-size: 250px;
 }
 /* .text-fluid-title-sm {
   font-size: var(--text-sm);

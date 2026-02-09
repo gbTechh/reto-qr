@@ -21,7 +21,7 @@ export const ProductCard = ({ product }: { product: IProduct }) => {
   const removeFromHistory = useProductStore((s) => s.removeFromHistory);
   const openOnlySheet = useProductStore((s) => s.openOnlySheet);
   return (
-    <Card className="mx-auto w-full max-w-sm">
+    <Card className="mx-auto w-full max-w-sm product-detail-content">
       <CardHeader className="gap-1">
         <div className="flex flex-row gap-4 justify-between items-start">
           <div className="aspect-square min-w-[50px] w-full max-w-[95px] ">

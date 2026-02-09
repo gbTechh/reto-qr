@@ -25,7 +25,7 @@ export const ProductDetailSheet = () => {
             </Text>
           </SheetTitle>
         </SheetHeader>
-        {selectedProduct && (
+        {isOpen && selectedProduct && (
           <div className="flex-col gap-6 w-full h-full max-w-[400px] mx-auto px-4 ">
             <div className="border-3 relative rounded-4xl">
               <div className="absolute top-0 right-0 m-2 z-10">
@@ -35,7 +35,7 @@ export const ProductDetailSheet = () => {
                 </Badge>
               </div>
               <ProductImage
-                key={selectedProduct.id}
+                //key={selectedProduct.id}
                 src={selectedProduct.image}
                 alt={selectedProduct.name}
               />
