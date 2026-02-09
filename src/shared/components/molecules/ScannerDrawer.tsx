@@ -26,16 +26,15 @@ export const ScannerDrawer = ({
     let scanner: Html5QrcodeScanner | null = null;
 
     if (isOpen) {
-      // Usamos un timeout corto para asegurar que el DOM de Shadcn ya esté montado
       const timer = setTimeout(() => {
         const element = document.getElementById("reader");
-        if (!element) return; // Evitamos el crash si aún no existe
+        if (!element) return;
 
         scanner = new Html5QrcodeScanner(
           "reader",
           {
             fps: 10,
-            qrbox: { width: 250, height: 150 },
+            qrbox: { width: 250, height: 250 },
             aspectRatio: 1.0,
             formatsToSupport: [
               Html5QrcodeSupportedFormats.EAN_13,
@@ -67,29 +66,30 @@ export const ScannerDrawer = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="h-[70vh] rounded-t-3xl">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2 justify-center pb-4 border-b">
+      <SheetContent
+        side="top"
+        className="max-h-[70dvh] rounded-b-3xl bg-transparent p-0 pb-2 gap-3"
+      >
+        <SheetHeader className="bg-card">
+          <SheetTitle className="flex items-center gap-2 border-b pb-2">
             <QrCode className="w-5 h-5 text-primary" />
             <Text variant="title" size="md">
               Escanear Producto
             </Text>
           </SheetTitle>
-        </SheetHeader>
 
-        <div className="flex flex-col items-center justify-center h-full gap-6">
-          <div
-            id="reader"
-            className="w-full max-w-[350px] overflow-hidden rounded-2xl border-2 border-dashed border-primary/30"
-          />
-
-          <div className="text-center px-6">
+          <div className="text-center px-6 bg-card pt-2">
             <Text color="grey" size="sm">
               Ubica el código de barras dentro del recuadro para identificar el
               producto automáticamente.
             </Text>
           </div>
-        </div>
+        </SheetHeader>
+
+        <div
+          id="reader"
+          className="w-full max-w-[200px] aspect-square mx-auto overflow-hidden rounded-2xl border border-dashed border-primary/30"
+        />
       </SheetContent>
     </Sheet>
   );

@@ -180,6 +180,14 @@
   content-visibility: auto;
   contain-intrinsic-size: 250px;
 }
+
+#reader__scan_region {
+  img {
+    display: none !important;
+  }
+}
+/* Opcional: ocultar el botón de stop si no lo necesitas */
+
 /* .text-fluid-title-sm {
   font-size: var(--text-sm);
   line-height: 1rem;

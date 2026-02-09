@@ -38,7 +38,7 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="centralize flex-col gap-10 pt-14 relative flex-1">
+      <section className="centralize flex-col gap-6 md:gap-10 pt-14 relative flex-1">
         <div className="centralize w-full px-10">
           <ButtonHistorial />
         </div>
@@ -49,11 +49,10 @@ export default function HomePage() {
         </div>
         <div className="centralize w-full centralize flex-col gap-4 px-10 text-center">
           <Text size={"big"} as="h1" variant={"title"}>
-            Bienvenido
+            Bienvenido a QrScanner
           </Text>
           <Text size={"md"} variant={"base"} as="p" color={"contrast"}>
-            Explora tu historial de trabajos de Go y descubre tus patrones de
-            uso.
+            Explora productos a solo un click.
           </Text>
         </div>
         <div>
