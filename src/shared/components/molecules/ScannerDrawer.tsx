@@ -175,7 +175,7 @@ export const ScannerDrawer = ({
         ) : (
           <div
             id="reader"
-            className="w-full max-w-[210px] p-1 aspect-square mx-auto overflow-hidden rounded-2xl border border-dashed border-primary/30 bg-black/10"
+            className="w-full max-w-[210px] p-1 aspect-square mx-auto overflow-hidden rounded-2xl border border-dashed border-primary/30 bg-black/0"
           />
         )}
       </SheetContent>

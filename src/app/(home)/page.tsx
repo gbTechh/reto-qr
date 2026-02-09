@@ -14,8 +14,7 @@ import { useEffect, useState } from "react";
 export default function HomePage() {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scannedCode, setScannedCode] = useState<string | null>(null);
-
-  const { data } = useProductQuery(scannedCode);
+  const { data, isLoading } = useProductQuery(scannedCode);
   const openOnlySheet = useProductStore((s) => s.openOnlySheet);
   const addToHistory = useProductStore((s) => s.addToHistory);
 
@@ -44,7 +43,7 @@ export default function HomePage() {
         </div>
         <div className="centralize w-full centralize px-10">
           <div className="aspect-square w-full max-w-[220px]">
-            <FlowField isScanning={isScannerOpen} />
+            <FlowField isScanning={isScannerOpen || isLoading} />
           </div>
         </div>
         <div className="centralize w-full centralize flex-col gap-4 px-10 text-center">

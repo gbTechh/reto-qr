@@ -6,7 +6,6 @@ interface CircularWaveProps {
   isScanning?: boolean;
 }
 
-// --- CONSTANTES DE CONFIGURACIÓN ---
 const GRID_DENSITY = 24;
 const SIZE = 400;
 const DASH_LENGTH = 6;
@@ -14,7 +13,6 @@ const SQUARE_SIZE = SIZE * 0.8;
 const SPACING = SQUARE_SIZE / (GRID_DENSITY - 1);
 const CENTER = SIZE / 2;
 
-// --- CLASE FUERA DEL COMPONENTE (Solución al error) ---
 class LineDash {
   gridX: number;
   gridY: number;
@@ -27,18 +25,20 @@ class LineDash {
   y: number = 0;
 
   constructor(row: number, col: number) {
+    // Calculamos la posición base una sola vez en el constructor
     this.gridX = (col - (GRID_DENSITY - 1) / 2) * SPACING;
     this.gridY = (row - (GRID_DENSITY - 1) / 2) * SPACING;
     this.distanceFromCenter = Math.sqrt(this.gridX ** 2 + this.gridY ** 2);
     this.polarAngle = Math.atan2(this.gridY, this.gridX);
+
+    this.x = CENTER + this.gridX;
+    this.y = CENTER + this.gridY;
   }
 
   update(time: number, compressionFactor: number) {
-    // Math de la onda
     const waveSpeed = 0.03;
     const waveFrequency = 0.02;
 
-    // El 'time' que recibimos aquí ya vendrá acelerado si estamos escaneando
     const radialWave = Math.sin(
       time * waveSpeed - this.distanceFromCenter * waveFrequency,
     );
@@ -46,19 +46,12 @@ class LineDash {
     const baseCircularAngle = this.polarAngle + Math.PI / 2;
     const targetRotation = this.polarAngle;
 
-    // Interpolación entre estado normal y estado comprimido
     this.rotation =
       baseCircularAngle * (1 - compressionFactor) +
       targetRotation * compressionFactor +
       radialWave * 0.5 * (1 - compressionFactor);
+    this.currentLength = DASH_LENGTH;
 
-    // Compresión espacial: los puntos viajan al centro
-    const currentScale = 1 - compressionFactor * 0.75;
-    this.x = CENTER + this.gridX * currentScale;
-    this.y = CENTER + this.gridY * currentScale;
-
-    // Efectos visuales de longitud y opacidad
-    this.currentLength = DASH_LENGTH * (1 - compressionFactor * 0.8);
     this.opacity = (0.4 + radialWave * 0.2) * (1 + compressionFactor * 0.5);
   }
 
@@ -68,6 +61,7 @@ class LineDash {
     ctx.rotate(this.rotation);
 
     ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
 
@@ -118,8 +112,8 @@ export const FlowField = ({ isScanning = false }: CircularWaveProps) => {
     let compressionProgress = 0;
 
     const animate = () => {
-      // --- LÓGICA DE VELOCIDAD ---
-      const speedMultiplier = isScanningRef.current ? 5 : 0.5;
+      // --- CONTROL DE VELOCIDAD ---
+      const speedMultiplier = isScanningRef.current ? 4 : 1;
       timeRef.current += 1 * speedMultiplier;
 
       const targetCompression = isScanningRef.current ? 1 : 0;
@@ -129,10 +123,6 @@ export const FlowField = ({ isScanning = false }: CircularWaveProps) => {
 
       lines.forEach((line) => {
         line.update(timeRef.current, compressionProgress);
-        ctx.strokeStyle = isScanningRef.current
-          ? `rgba(255, 255, 255, ${line.opacity})` // Color scanning (ej. negro intenso)
-          : `rgba(100, 100, 100, ${line.opacity})`; // Color reposo (ej. gris)
-
         line.draw(ctx);
       });
 
