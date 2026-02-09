@@ -35,7 +35,7 @@ export const ProductDetailSheet = () => {
                 </Badge>
               </div>
               <ProductImage
-                //key={selectedProduct.id}
+                key={selectedProduct.id}
                 src={selectedProduct.image}
                 alt={selectedProduct.name}
               />

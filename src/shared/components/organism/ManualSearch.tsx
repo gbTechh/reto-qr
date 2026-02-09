@@ -56,6 +56,13 @@ export const ManualSearch = () => {
     setSearchId(barcode);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    }
+  };
+
   return (
     <>
       <Dialog>
@@ -90,6 +97,7 @@ export const ManualSearch = () => {
               placeholder="Ej: 7501055363803"
               value={barcode}
               onChange={(e) => setBarcode(e.target.value)}
+              onKeyDown={handleKeyDown}
               type="text"
               className="text-lg py-6"
             />

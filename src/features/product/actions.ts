@@ -1,4 +1,3 @@
-// src/features/product/actions.ts
 "use server";
 
 import { ActionResponse } from "@/shared/utils/types";
@@ -33,7 +32,6 @@ export async function getProductAction(
 
     const data = await res.json();
 
-    // 2. Validación de Existencia
     if (data.status === 0 || !data.product) {
       return {
         success: false,

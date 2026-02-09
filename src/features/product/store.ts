@@ -5,7 +5,7 @@ import { IProduct } from "./types";
 interface ProductStore {
   selectedProduct: IProduct | null;
   isOpen: boolean;
-  history: IProduct[]; // El historial vive aquí
+  history: IProduct[];
   openOnlySheet: (product: IProduct) => void;
   addToHistory: (product: IProduct) => void;
   removeFromHistory: (productId: string) => void;

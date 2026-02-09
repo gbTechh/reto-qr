@@ -9,7 +9,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { ProductDetailSheet } from "@/components/organism/ProductDetailSheet";
 
-// 2. Componente de la Página (Contenido visual)
 export default function HistorialPage() {
   const history = useProductStore((state) => state.history);
   const [searchTerm, setSearchTerm] = useState("");

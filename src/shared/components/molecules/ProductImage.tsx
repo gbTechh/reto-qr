@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
 
-// Este componente se reinicia solo gracias a la prop 'key'
 export const ProductImage = ({
   src,
   alt,
